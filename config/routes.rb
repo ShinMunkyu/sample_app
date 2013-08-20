@@ -1,5 +1,9 @@
 SampleApp::Application.routes.draw do
-  get "users/new"
+  resources :users
+  #RESTful 하게 URL을 설정하기 위해서 
+  #많은 부분의 공통적으로 들어가는 users부분을 resources로 설정 
+  #get "users/new"
+  
   root 'static_pages#home'
   match '/signup',    to: 'users#new',          via: 'get'
   match '/help',    to: 'static_pages#help',    via: 'get'
