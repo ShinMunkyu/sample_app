@@ -13,8 +13,11 @@ class UsersController < ApplicationController
   	#@user = User.new(params[:user]) #Not the final implementation!
   	@user = User.new(user_params)
   	if @user.save
+      #sessions_helper 모듈안에 있는 메서드
+      sign_in @user
   		#Handle a successful save
       flash[:success] = "Welcome to the Sample App!"
+      #profile 화면으로 /users/1
   		redirect_to @user
   	else
   		render 'new'

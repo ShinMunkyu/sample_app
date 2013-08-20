@@ -13,7 +13,10 @@
   <%= render 'layouts/header' %>
     <div class="container">
       <% flash.each do |key, value| %>
+        <!-- 최대한 루비문법만으로 이루어진 코드를 사용하자.
         <div class="alert alert-<%= key %>"><%= value %></div>
+        -->
+        <%= content_tag(:div, value, class: "alert alert-#{key}") %>
       <% end %>
       <%= yield %>
       <%= render 'layouts/footer' %>

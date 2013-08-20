@@ -13,7 +13,9 @@ describe User do
   it { should respond_to(:password_digest)}
   it { should respond_to(:password)}
   it { should respond_to(:password_confirmation)}
+  it { should respond_to(:remember_token)}
   it { should respond_to(:authenticate)}
+
 
   it { should be_valid }
 
@@ -112,5 +114,14 @@ describe User do
   describe "with a password that's too short" do
   before { @user.password = @user.password_confirmation = "a" * 5 }
   it { should be_invalid }
+  end
+
+  #remember_token 테스트 
+  describe "remember token" do
+    #먼저 저장해야 한다.
+    before { @user.save }
+    #it은 subject로 지정한것에 대한 test
+    #its는 다음 attribute(여기서는 remember_token)에 대한 test 
+    its(:remember_token) { should_not be_blank }
   end
 end

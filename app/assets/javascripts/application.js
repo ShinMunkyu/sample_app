@@ -12,5 +12,9 @@
 //
 //= require jquery
 //= require jquery_ujs
+
+// dropdown 메뉴를 사용하기 위해 Bootstrap javascript library 추가
+//= require bootstrap
+
 //= require turbolinks
 //= require_tree .
