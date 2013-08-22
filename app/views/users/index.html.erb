@@ -1,0 +1,21 @@
+<% provide(:title, 'All users') %>
+<h1>All users</h1>
+
+<!-- 페이지 적용구간 설정 -->
+<%= will_paginate %>
+
+<ul class="users">
+<!--refactoring -ver1.
+	 _user.html.erb로 빼내고 여기서는 그것을 호출.
+  			
+-->
+<!-- refactoring -ver2. 
+	 @users는 user 객체의 리스트이다. 
+	 이런 collection을 호출하면 자동으로 각각 하나씩 render 한다.
+	 ver1처럼 행동. 	
+-->
+<%= render @users %>
+
+</ul>
+
+<%= will_paginate %>
