@@ -26,10 +26,25 @@ module SessionsHelper
     	@current_user ||= User.find_by(remember_token: remember_token)
   	end
 
+	def current_user?(user)
+    	user == current_user
+  	end
+
   	#current_user 를 비우고
   	#쿠키에 저장된 remember_token을 삭제한다.
   	def sign_out
     	self.current_user = nil
     	cookies.delete(:remember_token)
+  	end
+
+  	def redirect_back_or(default)
+  		redirect_to(session[:return_to] || default)
+  		session.delete(:return_to)
+  	end
+
+  	#session(Rails가 제공) 에 return_to라는 key로 request.url을 저장.
+  	#url을 얻기 위해 request object를 사용할 수 있다.
+  	def store_location
+  		session[:return_to] = request.url
   	end
 end

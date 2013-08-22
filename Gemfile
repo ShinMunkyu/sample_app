@@ -5,7 +5,9 @@ ruby '2.0.0'
 gem 'rails', '4.0.0'
 gem 'bootstrap-sass', '2.3.2.0'
 gem 'bcrypt-ruby', '3.0.1'
+#sample user를 만들도록 도와주는 gem
 gem 'faker', '1.1.2'
+#page 처리
 gem 'will_paginate', '3.0.4'
 gem 'bootstrap-will_paginate', '0.0.9'
 
@@ -18,6 +20,10 @@ group :development, :test do
   # gem 'guard-spork', '1.5.0'
   # gem 'childprocess', '0.3.6'
 end
+
+
+#유저 인터렉션을 시뮬레이트할 수 있도록 하는 애플리케이션 
+#selenium은 capubera의 의존성이 있는 애플리케이션 
 
 group :test do
   gem 'selenium-webdriver', '2.0.0'
