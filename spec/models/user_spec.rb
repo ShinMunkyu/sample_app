@@ -16,6 +16,10 @@ describe User do
   it { should respond_to(:remember_token)}
   it { should respond_to(:authenticate)}
   it { should respond_to(:admin)}
+  #micropost와 has- 관계를 가졌는지 체크 
+  it { should respond_to(:microposts) }
+  #feed method가 있는지 확인 
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -133,5 +137,43 @@ describe User do
     #it은 subject로 지정한것에 대한 test
     #its는 다음 attribute(여기서는 remember_token)에 대한 test 
     its(:remember_token) { should_not be_blank }
+  end
+
+  describe "micropost associations" do
+
+    before { @user.save }
+    let!(:older_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_micropost) do
+      FactoryGirl.create(:micropost, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right microposts in the right order" do
+      #배열 순서가 맞는지 test!
+      expect(@user.microposts.to_a).to eq [newer_micropost, older_micropost]
+    end
+
+    it "should destroy associated microposts" do 
+      microposts = @user.microposts.to_a
+      #삭제하는 것 보다 to_a를 먼저 해야지, each문 돌려보면서 test가 가능하다.
+      #삭제를 먼저하면 microposts 변수가 empty로 변한다.
+      @user.destroy
+      expect(microposts).not_to be_empty
+      microposts.each do |micropost|
+        #.where를 쓴 이유는 .find는 empty object에 대해 exception을 발생시킴!
+        expect(Micropost.where(id: micropost.id)).to be_empty
+      end
+    end
+
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:micropost, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_micropost) }
+      its(:feed) { should include(older_micropost) }
+      its(:feed) { should_not include(unfollowed_post) }
+    end
   end
 end

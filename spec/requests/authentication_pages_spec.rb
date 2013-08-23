@@ -68,6 +68,24 @@ describe "Authentication" do
         end
       end
 
+      describe "in the Microposts controller" do
+
+        describe "submitting to the create action" do
+          #path앞에는 request이름을 적는다.
+          #visit은 단순한 get
+          before { post microposts_path }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          #create의 arguments는 factories.rb에 설정한 factory
+          #micropost_path는 route에서 지정한 resource 이름
+          #destroy는 하나니깐 단수형으로!
+          before { delete micropost_path(FactoryGirl.create(:micropost)) }
+          specify { expect(response).to redirect_to(signin_path) }
+        end
+      end
+
       describe "in the Users Controller" do 
 
         describe "visiting the edit page" do

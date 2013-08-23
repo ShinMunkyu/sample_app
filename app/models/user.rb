@@ -1,12 +1,28 @@
 class User < ActiveRecord::Base
+
+  #micropost와 has_many 관계임을 명시.
+  #dependent: :destroy 
+  #user가 destroy되면 microposts들도 destroy
+  #user없는 microposts를 예방
+  has_many :microposts, dependent: :destroy
+
 	before_save { self.email = email.downcase }
 	before_create :create_remember_token
-	validates :name,  presence: true, length: { maximum: 50 }
-  	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
+	
+  validates :name,  presence: true, length: { maximum: 50 }
+  
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+  validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
   					uniqueness: { case_sensitive: false }
-   	has_secure_password
-   	validates :password, length: { minimum: 6 }
+  
+  has_secure_password
+  
+  validates :password, length: { minimum: 6 }
+
+    def feed
+      #This is preliminary. See "Following users" for the full implementation
+      Micropost.where("user_id = ?", id)
+    end
 
    	def User.new_remember_token
    		SecureRandom.urlsafe_base64

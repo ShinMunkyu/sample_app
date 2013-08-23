@@ -16,6 +16,9 @@ class UsersController < ApplicationController
 
   def show
   	@user = User.find(params[:id])
+    #index의 user와 같은 구조.
+    #test한 것중 show html에 서 content보여줄 때 에러생김. 
+    @microposts = @user.microposts.paginate(page: params[:page])
   end
   def new
   	#form_for는 @user가 필요하다. 그래서 간단히 만든다. 
@@ -74,19 +77,22 @@ class UsersController < ApplicationController
 
     #Before filters
 
-    def signed_in_user
-      unless signed_in? 
-        store_location
-        #signin_url은 어디서 정의했는지, signni_path 는 안되는지?
-        #flash[:notice]라고 적는게 원래 문법이지만
-        #redirect_to function을 활용해 shortcut으로 적을 수 있다.
-        redirect_to signin_url , notice: "Please sign in."
+    #module helper로 이동
+    #def signed_in_user
+      #unless signed_in? 
+        #store_location
+          #signin_url은 어디서 정의했는지, signni_path 는 안되는지?
+          #flash[:notice]라고 적는게 원래 문법이지만
+          #redirect_to function을 활용해 shortcut으로 적을 수 있다.
+          #redirect_to signin_url , notice: "Please sign in."
+        
         #unless signed_in?
         #  flash[:notice] = "Please sign in."
         #  redirect_to signin_url
         #end
-      end
-    end
+        
+      #end
+    #end
 
     def correct_user
       #current_user와 path에 포함된 id의 user가

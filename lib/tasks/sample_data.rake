@@ -18,5 +18,13 @@ namespace :db do
 						 password: password,
 						 password_confirmation: password) 
 		end
+
+		#sample data를 생성하기 위해서 db:populate를 run해야 한다.
+		users = User.all(limit: 6)
+		50.times do
+			#Faker::Lorem.setence는 lorem ipsum을 return한다.
+			content = Faker::Lorem.sentence(5)
+			users.each { |user| user.microposts.create!(content: content)}
+		end
 	end
 end

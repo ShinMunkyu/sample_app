@@ -1,0 +1,9 @@
+<%= form_for(@micropost) do |f| %>
+ <!-- form_for(@user) 라면 f.object는 @user 다. -->
+ <!-- 부분적으로 object를 지나가게하기 위해서 hash형태로 object를 설정한다. -->
+ <%= render 'shared/error_messages', object: f.object %>
+ <div class="field">
+ 	<%= f.text_area :content, placeholder: "Compose new micropost..."%>
+ </div>
+ <%= f.submit "Post", class: "btn btn-large btn-primary"  %>
+<% end %>

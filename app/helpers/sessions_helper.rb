@@ -23,28 +23,34 @@ module SessionsHelper
 		remember_token = User.encrypt(cookies[:remember_token])
     	#||= 는 "or equals"
     	#@current_user가 undefine되어 있는 경우에만 설정된다. 
-    	@current_user ||= User.find_by(remember_token: remember_token)
-  	end
+    @current_user ||= User.find_by(remember_token: remember_token)
+  end
 
 	def current_user?(user)
-    	user == current_user
-  	end
+    user == current_user
+  end
 
+  def signed_in_user
+    unless signed_in?
+      store_location
+      redirect_to signin_url, notice: "Please sign in."
+    end
+  end
   	#current_user 를 비우고
   	#쿠키에 저장된 remember_token을 삭제한다.
-  	def sign_out
-    	self.current_user = nil
-    	cookies.delete(:remember_token)
-  	end
+  def sign_out
+    self.current_user = nil
+    cookies.delete(:remember_token)
+  end
 
-  	def redirect_back_or(default)
-  		redirect_to(session[:return_to] || default)
-  		session.delete(:return_to)
-  	end
+  def redirect_back_or(default)
+  	redirect_to(session[:return_to] || default)
+  	session.delete(:return_to)
+  end
 
   	#session(Rails가 제공) 에 return_to라는 key로 request.url을 저장.
   	#url을 얻기 위해 request object를 사용할 수 있다.
-  	def store_location
-  		session[:return_to] = request.url
-  	end
+  def store_location
+  	session[:return_to] = request.url
+  end
 end

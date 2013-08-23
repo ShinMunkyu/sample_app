@@ -1,10 +1,14 @@
 SampleApp::Application.routes.draw do
+  
   resources :users
   #RESTful 하게 URL을 설정하기 위해서 
   #많은 부분의 공통적으로 들어가는 users부분을 resources로 설정 
   #get "users/new"
   
   resources :sessions, only: [:new, :create, :destroy]
+
+  #Microposts controller에서는 new 또는 edit action이 필요하지 않다.
+  resources :microposts, only: [:create, :destroy]
 
   root 'static_pages#home'
   match '/signup',  to: 'users#new',          via: 'get'
